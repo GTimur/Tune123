@@ -28,7 +28,7 @@ func FindFiles(dir string, mask []string) (files map[string]string, err error) {
 	files = make(map[string]string)
 
 	for i := range mask {
-		list, err = filepath.Glob(dir + "\\" + strings.ToUpper(mask[i]))
+		list, err = filepath.Glob(dir + "/" + strings.ToUpper(mask[i]))
 		if err != nil {
 			log.Println("FindFiles error: ", err)
 			return nil, err
@@ -39,7 +39,7 @@ func FindFiles(dir string, mask []string) (files map[string]string, err error) {
 		}
 	}
 	for i := range mask {
-		list, err = filepath.Glob(dir + "\\" + strings.ToLower(mask[i]))
+		list, err = filepath.Glob(dir + "/" + strings.ToLower(mask[i]))
 		if err != nil {
 			log.Println("FindFiles error: ", err)
 			return nil, err

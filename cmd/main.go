@@ -14,23 +14,23 @@ func main() {
 	/*
 		err := Setup("VOLUME", "50")
 		if err != nil {
-		    fmt.Println("Error")
+			fmt.Println("Error")
 		}
 
 		err = Setup("PLAYER", "STOP")
 		if err != nil {
-		    fmt.Println("Error")
+			fmt.Println("Error")
 		}
 	*/
 
 	/*CONFIG SECTION*/
-	tune123.GLOBALCONFIG.AudioPath = []string{"D:\\TEST_MUSIC\\ROOT1", "D:\\TEST_MUSIC\\ROOT2"}
+	tune123.GLOBALCONFIG.AudioPath = []string{"/home/gtg/go/src/tune123_playlist/1", "/home/gtg/go/src/tune123_playlist/2"}
 	tune123.GLOBALCONFIG.PlaylistPath = "./playlist"
 	tune123.GLOBALCONFIG.InitPlay = false
 	tune123.GLOBALCONFIG.InitVolume = 50
 	err := tune123.InitGlobal()
 	if err != nil {
-		fmt.Println("Application initialization:", err)
+		fmt.Println("Init error:", err)
 		os.Exit(2)
 	}
 	tune123.GLOBALCONFIG.CreateJSONFile() // создадим конфиг если его нет
@@ -56,7 +56,7 @@ func main() {
 		fmt.Println(err)
 	}
 	/*
-		var p croi.Player
+		var p tune123.Player
 		p.PlayerName = "MYPLAYER"
 		p.Binary = "mplayer.exe"
 		p.Path = "D:\\TEST\\MPLAYER"
@@ -73,19 +73,19 @@ func main() {
 
 		/**/
 
-	/*if err := croi.GLOBALTREE.TreeJSON(tune123.GLOBALDATABASE); err != nil {
+	/*if err := tune123.GLOBALTREE.TreeJSON(tune123.GLOBALDATABASE); err != nil {
 		fmt.Println(err)
-	    }
+	}
 
-	    fmt.Println("GLOBALTREE:")
+	fmt.Println("GLOBALTREE:")
 
-	    for _, r := range tune123.GLOBALTREE {
+	for _, r := range tune123.GLOBALTREE {
 		fmt.Println(r.Key, r.Title)
-	    }
-	    err = tune123.ScanLevel(tune123.GLOBALDATABASE)
-	    if err != nil {
+	}
+	err = tune123.ScanLevel(tune123.GLOBALDATABASE)
+	if err != nil {
 		fmt.Println(err)
-	    }*/
+	}*/
 
 	//fmt.Println("CATALOG:::")
 	//for _, r := range tune123.GLOGBALCATALOG.Files {
@@ -104,6 +104,7 @@ func main() {
 	server.SetHost(net.ParseIP(tune123.HTTPServerConfig.ManagerSrvAddr()))
 	server.SetPort(tune123.HTTPServerConfig.ManagerSrvPort())
 	server.StartServe()
+	fmt.Println("HTTP-Server started at", server.ConnString())
 
 	WaitExit := false
 
@@ -127,7 +128,6 @@ func main() {
 		break
 	}
 	ticker.Stop()
-
 }
 
 // Применение настроек для микшера и плеера

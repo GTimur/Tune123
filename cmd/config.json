@@ -1,0 +1,13 @@
+{
+	"AudioPath": [
+		"/home/gtg/go/src/tune123_playlist/1",
+		"/home/gtg/go/src/tune123_playlist/2"
+	],
+	"PlaylistPath": "./playlist",
+	"InitVolume": 50,
+	"InitPlay": false,
+	"FileName": "config.json",
+	"Log": {
+		"Filename": "player.log"
+	}
+}

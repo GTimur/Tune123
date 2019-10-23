@@ -48,7 +48,7 @@ var (
 //Запускает goroutine ListenAndServe
 func (w *WebCtl) StartServe() (err error) {
 	//signal.Notify(Quit, os.Interrupt)
-	srv := &http.Server{Addr: w.connString(), Handler: http.DefaultServeMux}
+	srv := &http.Server{Addr: w.ConnString(), Handler: http.DefaultServeMux}
 
 	// для отдачи сервером статичных файлов из папки public/static
 	fs := http.FileServer(http.Dir("./static/"))
@@ -59,7 +59,7 @@ func (w *WebCtl) StartServe() (err error) {
 	http.HandleFunc("/", urlhome) //Страница управления
 
 	go func() {
-		log.Println("Starting HTTP-server...")
+		// log.Println("Starting HTTP-server ...")
 		log.Fatalln("WebCtl:", srv.ListenAndServe())
 	}()
 
@@ -78,7 +78,7 @@ func (w *WebCtl) StartServe() (err error) {
 
 //Обработчик запросов для home
 func urlhome(w http.ResponseWriter, r *http.Request) {
-	title := "TELEXGEN GO"
+	title := "Welcome to tune123"
 	body := ""
 	lnkhome := "http://" + HTTPServerConfig.managerSrv.Addr + ":" + strconv.Itoa(int(HTTPServerConfig.managerSrv.Port))
 	//page := Page{title, template.HTML(body), lnkhome, "" }
@@ -107,7 +107,7 @@ func (w *WebCtl) SetPort(port uint16) {
 }
 
 /**/
-func (w WebCtl) connString() string {
+func (w WebCtl) ConnString() string {
 	return fmt.Sprintf("%s:%d", w.host.String(), w.port)
 }
 
@@ -124,4 +124,8 @@ func (s *SrvConfig) ManagerSrvAddr() string {
 
 func (s *SrvConfig) ManagerSrvPort() uint16 {
 	return s.managerSrv.Port
+}
+
+func (w WebCtl) Port() uint16 {
+	return w.port
 }

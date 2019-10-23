@@ -1,0 +1,293 @@
+{{define "head"}}
+<style>
+    .input-group-btn:first-child > .form-control {
+  margin-left: +1px;
+  width: auto;
+}
+</style>
+{{end}}
+{{define "title"}}{{.Title}} {{end}}
+{{define "body"}}
+{{.Body}}
+<form class="form-horizontal" id="register-data" action="javascript:void(null);" method="post">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-xs-12">
+                <div class="jumbotron myJumbotron text-center">
+                    <h1>PLAYER123</h1>
+                    <p>Version 0.1</p>
+                    <legend>Управление плеером</legend>
+                    <div class="control-group">
+                        <button id="prev-button" name="prev-button" class="btn btn-success"><span class="glyphicon glyphicon-step-backward"></span></button>
+                        <button id="play-button" name="play-button" class="btn btn-success"><span class="glyphicon glyphicon-play"></span></button>
+                        <button id="pause-button" name="pause-button" class="btn btn-success"><span class="glyphicon glyphicon-pause"></span></button>
+                        <button id="stop-button" name="stop-button" class="btn btn-success"><span class="glyphicon glyphicon-stop"></span></button>
+                        <button id="next-button" name="next-button" class="btn btn-success"><span class="glyphicon glyphicon-step-forward"></span></button>
+
+                        <span class="glyphicon glyphicon-plus"></span>
+
+                        <button id="repeat-button" name="repeat-button" class="btn btn-success"><span class="glyphicon glyphicon-repeat"></span></button>
+                        <button id="retweet-button" name="retweet-button" class="btn btn-success"><span class="glyphicon glyphicon-retweet"></span></button>
+                        <button id="random-button" name="random-button" class="btn btn-success"><span class="glyphicon glyphicon-random"></span></button>
+
+                        <span class="glyphicon glyphicon-plus"></span>
+
+                        <button id="mute-button" name="mute-button" class="btn btn-success"><span class="glyphicon glyphicon-volume-off"></span></button>
+                        <button id="volume-down-button" name="volume-down-button" class="btn btn-success"><span class="glyphicon glyphicon-volume-down"></span></button>
+                        <button id="volume-up-button" name="volume-up-button" class="btn btn-success"><span class="glyphicon glyphicon-volume-up"></span></button>
+
+                        <span class="glyphicon glyphicon-plus"></span>
+
+                        <button id="del-playlist-button" name="del-playlist-button" class="btn btn-success"><span class="glyphicon glyphicon-trash"></span></button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row align-items-center">
+            <div class="col-lg-6 col-sm-6 col-xs-12">
+                <legend>Медиатека</legend>
+
+                <div id="tree">
+                    <ul id="treeData" style="display: none;">
+                        <li id="1">Node 1
+                        <li id="2" class="folder">Folder 2
+                            <ul>
+                                <li id="3">Node 2.1
+                                <li id="4">Node 2.2
+                            </ul>
+                    </ul>
+                </div>
+
+                </br>
+                <div class="control-group">
+                    <div class="input-group">
+                        <div class="input-group-btn">
+                            <select class="form-control" name="category">
+                                <option>Искать везде</option>
+                                <option>По артисту</option>
+                                <option>По альбому</option>
+                                <option>По имени трека</option>
+                            </select>
+                        </div>
+                        <input class="form-control" name="q" type="text" placeholder="Search">
+                        <span class="input-group-btn">
+                            <button class="btn btn-default" type="button">Ищем!</button>
+                        </span>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-6 col-sm-6 col-xs-12">
+                <legend>Плейлист</legend>
+                <div class="control-group">
+                    <label class="control-label" for="current-playlist-table">Текущий плейлист</label>
+                    <table id="current-playlist-table" class="table table-striped table-bordered table-hover table-sm"
+                        style="width:100%">
+                        <thead class="alert alert-info">
+                            <tr>
+                                <th>Номер</th>
+                                <th>Артист</th>
+                                <th>Альбом</th>
+                                <th>#</th>
+                                <th>Песня</th>
+                                <th>Время</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>1</td>
+                                <td>Rammstein</td>
+                                <td>Mutter</td>
+                                <td>1</td>
+                                <td>Ich Wil</td>
+                                <td>03:00</td>
+                            </tr>
+                            <tr>
+                                <td>2</td>
+                                <td>Rammstein</td>
+                                <td>Mutter</td>
+                                <td>2</td>
+                                <td>Sonne</td>
+                                <td>04:00</td>
+                            </tr>
+                        </tbody>
+                        <tfoot>
+                            <tr>
+
+                            </tr>
+                        </tfoot>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</form>
+{{end}}
+{{define "scripts"}}
+<script type="text/javascript" language="javascript">
+    $('#savebutton').click(function () {
+        $('#savebutton').prop('disabled', true);
+        var data = $("#register-data").serializeObject();
+        data["Post"] = "SaveButton"
+        //alert(JSON.stringify(data));
+        $.ajax({                 /* start ajax function to send data */
+            url: "/",
+            type: 'POST',
+            datatype: 'json',
+            contentType: 'application/json; charset=UTF-8',
+            error: function () { alert("POST Handshake didn't go through") }, /* call disconnect function */
+            data: JSON.stringify(data),
+            success: function (data) {
+                //alert("REG: "+data);
+                // handle AJAX redirection
+                if (JSON.parse(data) == "SaveOk") {
+                    alert("Сообщение сформировано успешно.");
+                    window.location = '/success';
+                }
+                if (JSON.parse(data) == "SaveNotOkSUM") {
+                    alert("Сумма сделки введена с ошибкой.");
+                    $('#savebutton').prop('disabled', false);
+                }
+                if (JSON.parse(data) == "SaveNotOk") {
+                    alert("Данные введены с ошибкой.");
+                    $('#savebutton').prop('disabled', false);
+                }
+
+
+            }
+        });
+    });
+    $('#exitbutton').click(function () {
+        $('#exitbutton').prop('disabled', true);
+        var data = {};
+        data["Post"] = "ExitButton"
+        //alert(JSON.stringify(data));
+        $.ajax({                 /* start ajax function to send data */
+            url: "/",
+            type: 'POST',
+            datatype: 'json',
+            contentType: 'application/json; charset=UTF-8',
+            error: function () { alert("POST Handshake didn't go through") }, /* call disconnect function */
+            data: JSON.stringify(data),
+            success: function (data) {
+                //alert("REG: "+data);
+                // handle AJAX redirection
+                if (JSON.parse(data) == "ExitOk") {
+                    alert("Приложение остановлено, работа с приложением завершена.");
+                    window.location = 'about:blank';
+                }
+
+            }
+        });
+    });
+
+    $('#calcbutton').click(function () {
+        $('#calcbutton').prop('disabled', true);
+        var data = $("#register-data").serializeObject();
+        data["Post"] = "CalcButton"
+        //alert(JSON.stringify(data));
+        $.ajax({                 /* start ajax function to send data */
+            url: "/",
+            type: 'POST',
+            datatype: 'json',
+            contentType: 'application/json; charset=UTF-8',
+            error: function () { alert("POST Handshake didn't go through") }, /* call disconnect function */
+            data: JSON.stringify(data),
+            success: function (data) {
+                arr = JSON.parse(data);
+                //alert("Ключ TELEX: "+arr[1]);
+                // handle AJAX redirection
+                if (arr[0] == "CalcOk") {
+                    document.getElementById("telexkey").value = arr[1];
+                    document.getElementById("calclog").value = arr[2];
+
+                }
+                if (JSON.parse(data) == "CalcNotOk") {
+                    alert("Данные введены с ошибкой.");
+                    $('#calcbutton').prop('disabled', false);
+                }
+
+
+            }
+        });
+    });
+
+
+
+    $.fn.serializeObject = function () {
+        var o = {};
+        var a = this.serializeArray();
+        $.each(a, function () {
+            if (o[this.name] !== undefined) {
+                if (!o[this.name].push) {
+                    o[this.name] = [o[this.name]];
+                }
+                o[this.name].push(this.value || '');
+            } else {
+                o[this.name] = this.value || '';
+            }
+        });
+        return o;
+    };
+
+</script>
+<!-- Initialize the tree when page is loaded -->
+<script type="text/javascript">
+    $(function () {  // on page load
+        // Create the tree inside the <div id="tree"> element.
+        $("#tree").fancytree({
+            extensions: ["edit", "filter"],
+            quicksearch: true,
+            source: [
+                { title: "Node 1", key: "1" },
+                {
+                    title: "Folder 2", key: "2", folder: false, children: [
+                        { title: "Node 2.1", key: "3" },
+                        { title: "Node 2.2", key: "4" }
+                    ]
+                }
+            ],
+            checkbox: function (event, data) {
+                // Hide checkboxes for folders
+                return data.node.isFolder() ? false : true;
+            },
+            tooltip: function (event, data) {
+                // Create dynamic tooltips
+                return data.node.title + " (" + data.node.key + ")";
+            },
+            icon: function (event, data) {
+                var node = data.node;
+                // Create custom icons
+                if (node.data.refType === "foo") {
+                    return "foo-icon-class";
+                }
+                // Exit without returning a value: continue with default processing.
+            },
+            activate: function (event, data) {
+                // A node was activated: display its title:
+                var node = data.node;
+                $("#echoActive").text(node.title)
+                console.log(node.title)
+            },
+            beforeSelect: function (event, data) {
+                // A node is about to be selected: prevent this, for folder-nodes:
+                if (data.node.isFolder()) {
+                    return false;
+                }
+            },
+            filter: {
+                autoApply: true,   // Re-apply last filter if lazy data is loaded
+                autoExpand: false, // Expand all branches that contain matches while filtered
+                counter: true,     // Show a badge with number of matching child nodes near parent icons
+                fuzzy: false,      // Match single characters in order, e.g. 'fb' will match 'FooBar'
+                hideExpandedCounter: true,  // Hide counter badge if parent is expanded
+                hideExpanders: false,       // Hide expanders if all child nodes are hidden by filter
+                highlight: true,   // Highlight matches by wrapping inside <mark> tags
+                leavesOnly: false, // Match end nodes only
+                nodata: true,      // Display a 'no data' status node if result is empty
+                mode: "dimm"       // Grayout unmatched nodes (pass "hide" to remove unmatched node instead)
+            }
+        });
+        // Note: Loading and initialization may be asynchronous, so the nodes may not be accessible yet.
+    });
+</script>
+{{end}}

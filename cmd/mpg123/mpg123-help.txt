@@ -1,0 +1,147 @@
+High Performance MPEG 1.0/2.0/2.5 Audio Player for Layers 1, 2 and 3
+	version 1.25.10; written and copyright by Michael Hipp and others
+	free software (LGPL) without any warranty but with best wishes
+
+usage: mpg123.exe [option(s)] [file(s) | URL(s) | -]
+
+input options
+
+ -k <n> --skip <n>         skip n frames at beginning
+        --skip-id3v2       skip ID3v2 tags without parsing
+ -n     --frames <n>       play only <n> frames of every stream
+        --fuzzy            Enable fuzzy seeks (guessing byte offsets or using approximate seek points from Xing TOC)
+ -y     --no-resync        DISABLES resync on error (--resync is deprecated)
+ -p <f> --proxy <f>        set WWW proxy
+ -u     --auth             set auth values for HTTP access
+        --ignore-mime      ignore HTTP MIME types (content-type)
+        --no-seekbuffer    disable seek buffer
+ -@ <f> --list <f>         play songs in playlist <f> (plain list, m3u, pls (shoutcast))
+ -l <n> --listentry <n>    play nth title in playlist; show whole playlist for n < 0
+        --continue         playlist continuation mode (see man page)
+        --loop <n>         loop track(s) <n> times, < 0 means infinite loop (not with --random!)
+        --keep-open        (--remote mode only) keep loaded file open after reaching end
+        --timeout <n>      Timeout in seconds before declaring a stream dead (if <= 0, wait forever)
+ -z     --shuffle          shuffle song-list before playing
+ -Z     --random           full random play
+        --no-icy-meta      Do not accept ICY meta data
+ -i     --index            index / scan through the track before playback
+        --index-size <n>   change size of frame index
+        --preframes  <n>   number of frames to decode in advance after seeking (to keep layer 3 bit reservoir happy)
+        --resync-limit <n> Set number of bytes to search for valid MPEG data; <0 means search whole stream.
+        --streamdump <f>   Dump a copy of input data (as read by libmpg123) to given file.
+        --icy-interval <n> Enforce ICY interval in bytes (for playing a stream dump.
+        --ignore-streamlength Ignore header info about length of MPEG streams.
+output/processing options
+
+ -o <o> --output <o>       select audio output module
+        --list-modules     list the available modules
+ -a <d> --audiodevice <d>  select audio device (depending on chosen module)
+ -s     --stdout           write raw audio to stdout (host native format)
+ -S     --STDOUT           play AND output stream (not implemented yet)
+ -w <f> --wav <f>          write samples as WAV file in <f> (- is stdout)
+        --au <f>           write samples as Sun AU file in <f> (- is stdout)
+        --cdr <f>          write samples as raw CD audio file in <f> (- is stdout)
+        --reopen           force close/open on audiodevice
+        --cpu <string>     set cpu optimization
+        --test-cpu         list optimizations possible with cpu and exit
+        --list-cpu         list builtin optimizations and exit
+ -g     --gain             [DEPRECATED] set audio hardware output gain
+ -f <n> --scale <n>        scale output samples (soft gain - based on 32768), default=32768)
+        --rva-mix,
+        --rva-radio        use RVA2/ReplayGain values for mix/radio mode
+        --rva-album,
+        --rva-audiophile   use RVA2/ReplayGain values for album/audiophile mode
+ -0     --left --single0   play only left channel
+ -1     --right --single1  play only right channel
+ -m     --mono --mix       mix stereo to mono
+        --stereo           duplicate mono channel
+ -r     --rate             force a specific audio output rate
+ -2     --2to1             2:1 downsampling
+ -4     --4to1             4:1 downsampling
+        --pitch <value>    set hardware pitch (speedup/down, 0 is neutral; 0.05 is 5%)
+        --8bit             force 8 bit output
+        --float            force floating point output (internal precision)
+ -e <c> --encoding <c>     force a specific encoding (s16 u16 s32 u32 s24 u24 f32 s8 u8 ulaw alaw)
+ -d n   --doublespeed n    play only every nth frame
+ -h n   --halfspeed   n    play every frame n times
+        --equalizer        exp.: scales freq. bands acrd. to 'equalizer.dat'
+        --gapless          remove padding/junk on mp3s (best with Lame tag)
+                           This is on by default when libmpg123 supports it.
+        --no-gapless       disable gapless mode, not remove padding/junk
+        --no-infoframe     disable parsing of Xing/Lame/VBR/Info frame
+ -D n   --delay n          insert a delay of n seconds before each track
+ -o h   --headphones       (aix/hp/sun) output on headphones
+ -o s   --speaker          (aix/hp/sun) output on speaker
+ -o l   --lineout          (aix/hp/sun) output to lineout
+        --devbuffer <s>    set device buffer in seconds; <= 0 means default
+
+misc options
+
+ -t     --test             only decode, no output (benchmark)
+ -c     --check            count and display clipped samples
+ -v[*]  --verbose          increase verboselevel
+ -q     --quiet            quiet mode
+        --title            set terminal title to filename
+        --name <n>         set instance name (used in various places)
+        --long-tag         spacy id3 display with every item on a separate line
+        --lyrics           show lyrics (from ID3v2 USLT frame)
+        --utf8             Regardless of environment, print metadata in UTF-8.
+ -R     --remote           generic remote interface
+        --remote-err       force use of stderr for generic remote interface
+        --fifo <path>      open a FIFO at <path> for commands instead of stdin
+ -T     --realtime         tries to get realtime priority
+        --priority <n>     use specified process priority
+                           accepts -2 to 3 as integer arguments
+                           -2 as idle, 0 as normal and 3 as realtime.
+ -?     --help             give compact help
+        --longhelp         give this long help listing
+        --version          give name / version string
+
+See the manpage mpg123(1) for more information.
+
+
+
+
+
+
+
+@R MPG123 (ThOr) v8
+help
+@H {
+@H HELP/H: command listing (LONG/SHORT forms), command case insensitve
+@H LOAD/L <trackname>: load and start playing resource <trackname>
+@H LOADPAUSED/LP <trackname>: load but do not start playing resource <trackname>
+@H LOADLIST/LL <entry> <url>: load a playlist from given <url>, and display its entries, optionally load and play one of these specificed by the integer <entry> (<0: just list, 0: play last track, >0:play track with that position in list)
+@H PAUSE/P: pause playback
+@H STOP/S: stop playback (closes file)
+@H JUMP/J <frame>|<+offset>|<-offset>|<[+|-]seconds>s: jump to mpeg frame <frame> or change position by offset, same in seconds if number followed by "s"
+@H VOLUME/V <percent>: set volume in % (0..100...); float value
+@H RVA off|(mix|radio)|(album|audiophile): set rva mode
+@H EQ/E <channel> <band> <value>: set equalizer value for frequency band 0 to 31 on channel 1 (left) or 2 (right) or 3 (both)
+@H EQFILE <filename>: load EQ settings from a file
+@H SHOWEQ: show all equalizer settings (as <channel> <band> <value> lines in a SHOWEQ block (like TAG))
+@H SEEK/K <sample>|<+offset>|<-offset>: jump to output sample position <samples> or change position by offset
+@H SCAN: scan through the file, building seek index
+@H SAMPLE: print out the sample position and total number of samples
+@H FORMAT: print out sampling rate in Hz and channel count
+@H SEQ <bass> <mid> <treble>: simple eq setting...
+@H PITCH <[+|-]value>: adjust playback speed (+0.01 is 1 % faster)
+@H SILENCE: be silent during playback (meaning silence in text form)
+@H STATE: Print auxiliary state info in several lines (just try it to see what info is there).
+@H TAG/T: Print all available (ID3) tag info, for ID3v2 that gives output of all collected text fields, using the ID3v2.3/4 4-character names. NOTE: ID3v2 data will be deleted on non-forward seeks.
+@H    The output is multiple lines, begin marked by "@T {", end by "@T }".
+@H    ID3v1 data is like in the @I info lines (see below), just with "@T" in front.
+@H    An ID3v2 data field is introduced via ([ ... ] means optional):
+@H     @T ID3v2.<NAME>[ [lang(<LANG>)] desc(<description>)]:
+@H    The lines of data follow with "=" prefixed:
+@H     @T =<one line of content in UTF-8 encoding>
+@H meaning of the @S stream info:
+@H S <mpeg-version> <layer> <sampling freq> <mode(stereo/mono/...)> <mode_ext> <framesize> <stereo> <copyright> <error_protected> <emphasis> <bitrate> <extension> <vbr(0/1=yes/no)>
+@H The @I lines after loading a track give some ID3 info, the format:
+@H      @I ID3:artist  album  year  comment genretext
+@H     where artist,album and comment are exactly 30 characters each, year is 4 characters, genre text unspecified.
+@H     You will encounter "@I ID3.genre:<number>" and "@I ID3.track:<number>".
+@H     Then, there is an excerpt of ID3v2 info in the structure
+@H      @I ID3v2.title:Blabla bla Bla
+@H     for every line of the "title" data field. Likewise for other fields (author, album, etc).
+@H }

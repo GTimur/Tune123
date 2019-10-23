@@ -1,0 +1,21 @@
+{
+	"Name": "",
+	"PlayList": {
+		"Rec": [
+			{
+				"ID": 1,
+				"FolderName": "/home/gtg/go/src/tune123_playlist/1/(What's the Story) Morning Glory-",
+				"FileName": "06 [Untitled Track].mp3",
+				"FullPath": "/home/gtg/go/src/tune123_playlist/1/(What's the Story) Morning Glory-/06 [Untitled Track].mp3"
+			},
+			{
+				"ID": 2,
+				"FolderName": "/home/gtg/go/src/tune123_playlist/1/(What's the Story) Morning Glory-",
+				"FileName": "08 Cast No Shadow.mp3",
+				"FullPath": "/home/gtg/go/src/tune123_playlist/1/(What's the Story) Morning Glory-/08 Cast No Shadow.mp3"
+			}
+		]
+	},
+	"FileName": "playlist.json",
+	"FileNameM3u": "playlist01.m3u"
+}
